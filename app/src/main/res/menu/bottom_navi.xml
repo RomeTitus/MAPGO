@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+<item android:id="@+id/navigation_Login"
+    android:icon="@drawable/car_black_24dp"
+    android:title="Sign In"/>
+
+    <item android:id="@+id/navigation_Create"
+        android:icon="@drawable/ic_library_books_24dp"
+        android:title="Create Account"/>
+
+</menu>

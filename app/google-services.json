@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "722931114237",
+    "firebase_url": "https://mapgo-433aa.firebaseio.com",
+    "project_id": "mapgo-433aa",
+    "storage_bucket": "mapgo-433aa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:722931114237:android:73b0974a0b5c3dc9",
+        "android_client_info": {
+          "package_name": "com.example.mapgo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "722931114237-b183cp268jfq22mbnl1lobqkj84fc8ik.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.mapgo",
+            "certificate_hash": "0c78defe1a10fb83083af4fb0b006c2c67bb24bf"
+          }
+        },
+        {
+          "client_id": "722931114237-rh7pubbob21l4qjiditsk4f6gi4eou6k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBRAUaTwn18daKFtCa7J_kbEpLXn8pglJw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "722931114237-rh7pubbob21l4qjiditsk4f6gi4eou6k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

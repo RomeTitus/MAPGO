@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textSize="36sp" />
+
+    <Button
+        android:id="@+id/BtnCommit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="YES" />
+
+    <Button
+        android:id="@+id/BtnCancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="No" />
+</LinearLayout>

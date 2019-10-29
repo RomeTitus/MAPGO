@@ -1,9 +1,7 @@
 package com.example.mapgo;
 
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
-import android.os.SystemClock;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,15 +10,20 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.PagerAdapter;
 
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+
+import java.util.concurrent.Executor;
+
+import static androidx.constraintlayout.widget.Constraints.TAG;
 
 
 public class LogInFragmentController extends PagerAdapter {
@@ -33,8 +36,9 @@ public class LogInFragmentController extends PagerAdapter {
     private MyCustomObjectListener GoogleSignIn;
     private SignInButton signInButton, signUpButton;
     private ImageView imageCar, imageCycle, imageWalk;
-    private TextView TxtName;
+    private TextView TxtName, TextEmailLogin, TextPasswordLogin, TextEmailRegister, TextPasswordRegister;
     private Switch switchImperial;
+    private Button ButtonSignIn;
 
 
     public LogInFragmentController (Context context){
@@ -76,12 +80,26 @@ public class LogInFragmentController extends PagerAdapter {
         //different positions give different pages to show
         if (position == 0) {
             view = inflater.inflate(R.layout.fragment_login, container, false);
+            TextEmailLogin = view.findViewById(R.id.textEmailLogin);
+            TextPasswordLogin = view.findViewById(R.id.textPasswordLogin);
             signInButton = view.findViewById(R.id.GoogleSignIn);
+            ButtonSignIn = view.findViewById(R.id.ButtonSignIn);
 
             signInButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     GoogleSignIn.onObjectReady("GoogleSignInAuthenticator");
+                }
+            });
+
+            ButtonSignIn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                   if(!(TextEmailLogin.getText().toString()).equals("") && !(TextPasswordLogin.getText().toString()).equals("")){
+
+                        GoogleSignIn.onObjectReady("SignIn#"+ TextEmailLogin.getText().toString() + "#" + TextPasswordLogin.getText().toString() );
+                    }
+
                 }
             });
         }
@@ -95,6 +113,10 @@ public class LogInFragmentController extends PagerAdapter {
             imageCar = view.findViewById(R.id.imageCarTransport);
             imageCycle = view.findViewById(R.id.imageCycleTransport);
             imageWalk = view.findViewById(R.id.imageWalkTransport);
+            TextEmailRegister = view.findViewById(R.id.textEmailRegister);
+            TextPasswordRegister = view.findViewById(R.id.textPasswordRegister);
+
+           ButtonSignIn = view.findViewById(R.id.buttonSignInRegister);
 
             imageCar.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -131,6 +153,21 @@ public class LogInFragmentController extends PagerAdapter {
                     GoogleSignIn.onObjectReady("GetIDGoogleSignInAuthenticator");
                 }
             });
+
+
+            ButtonSignIn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(TextPasswordRegister.getText().toString().length()>= 0){
+                        GoogleSignIn.onObjectReady("SignUp#"+ TextEmailRegister.getText().toString() + "#" + TextPasswordRegister.getText().toString() );
+                    }else{
+                        Toast.makeText(context, "The password needs to be greater than 5", Toast.LENGTH_SHORT).show();
+                    }
+
+
+                }
+            });
+
         }
 
 
@@ -156,8 +193,18 @@ public class LogInFragmentController extends PagerAdapter {
         user.setUser_StartTransport(prefferedMode);
         return user;
 
+    }
+    public User createUserObject(){
+        User user = new User();
+        user.setUser_Email(TextEmailRegister.getText().toString());
+        user.setUser_isImperial(Boolean.toString(switchImperial.isChecked()));
+        user.setUser_Name(TxtName.getText().toString());
+        user.setUser_StartTransport(prefferedMode);
+        return user;
 
     }
+
+
 
 
 }

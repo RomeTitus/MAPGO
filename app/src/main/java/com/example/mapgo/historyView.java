@@ -74,16 +74,6 @@ public class historyView extends AppCompatActivity  {
         BtnBack = findViewById(R.id.BtnBack);
         //RelativeLayoutHistoryMaps = findViewById(R.id.RelativeLayoutHistoryMaps);
 
-
-
-
-        //Fragment mFragment = new FragmentGoogleMapsPreview();
-        //getSupportFragmentManager().beginTransaction().replace(R.id.RelativeLayoutHistoryMaps, mFragment).commit();
-
-
-
-
-
         BtnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

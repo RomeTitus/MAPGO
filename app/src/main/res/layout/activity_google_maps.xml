@@ -27,7 +27,8 @@
             android:id="@+id/LinearLayoutMenu"
             android:layout_width="140dp"
             android:layout_height="match_parent"
-            android:background="@color/colorWhite"
+
+            android:background="@color/colorPrimary"
             android:gravity="center_horizontal"
             android:orientation="vertical">
 
@@ -36,7 +37,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="Welcome..." />
+                android:text="Welcome..."
+                android:textColor="#FFFFFF"
+                android:textSize="24sp" />
 
             <Button
                 android:id="@+id/BtnHistory"
@@ -55,13 +58,13 @@
                 android:id="@+id/textView7"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="CHANGE TO IMPERIAL" />
+                android:text="CHANGE TO IMPERIAL"
+                android:textColor="#FFFFFF" />
 
             <Switch
                 android:id="@+id/switchImperial2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Switch" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
             <View
                 android:id="@+id/view"
@@ -75,6 +78,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TRANCEPORT MODE"
+                android:textColor="#FFFFFF"
                 android:textSize="18sp" />
 
             <ImageView
@@ -83,6 +87,7 @@
                 android:layout_height="50dp"
                 android:layout_weight="0"
                 android:padding="5dp"
+                android:background="@color/colorPrimary"
                 android:src="@drawable/walk_black_24dp" />
 
             <ImageView
@@ -91,6 +96,7 @@
                 android:layout_height="50dp"
                 android:layout_weight="0"
                 android:padding="5dp"
+                android:background="@color/colorPrimary"
                 android:src="@drawable/bike_black_24dp" />
 
             <ImageView
@@ -128,7 +134,9 @@
         android:id="@+id/LinearLayoutSearch"
         android:layout_width="405dp"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
+        android:layout_marginStart="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginBottom="30dp"
@@ -144,6 +152,7 @@
             android:orientation="vertical"></LinearLayout>
 
         <LinearLayout
+            android:id="@+id/LinearLayoutSearchBar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="7"
@@ -151,7 +160,6 @@
             android:orientation="horizontal">
 
             <LinearLayout
-                android:id="@+id/LinearLayoutTapToSearch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
@@ -171,7 +179,7 @@
                 android:id="@+id/NavSetting"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                android:layout_margin="10dp"
                 android:layout_weight="1"
                 android:background="@null"
                 android:scaleType="fitCenter" />

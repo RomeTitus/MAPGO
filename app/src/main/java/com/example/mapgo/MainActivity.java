@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,13 +11,12 @@ import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -33,8 +31,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.security.spec.ECField;
 import java.util.ArrayList;
+
+import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -120,10 +119,62 @@ public class MainActivity extends AppCompatActivity {
             public void onObjectReady(String title) {
                 if(title.equals("GoogleSignInAuthenticator")){
                     setRegister(false);
-                    signIn();
+                    signInGoogle();
                 }else if(title.equals("GetIDGoogleSignInAuthenticator")){
                     setRegister(true);
-                    signIn();
+                    signInGoogle();
+                }else if(title.indexOf("SignIn#") !=-1){
+                    String[] data = title.split("#");
+
+                    auth.signInWithEmailAndPassword(data[1], data[2])
+                            .addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    if (task.isSuccessful()) {
+                                        // Sign in success, update UI with the signed-in user's information
+
+                                        Toast.makeText(getApplicationContext(), "Welcome Back!", Toast.LENGTH_SHORT).show();
+                                        //GoogleMaps map = new GoogleMaps(user);
+                                        Intent intent = new Intent(MainActivity.this, GoogleMaps.class);
+                                        //intent.putExtra(EXTRA_MESSAGE, message);
+                                        startActivity(intent);
+                                        finish();
+                                    } else {
+                                        Toast.makeText(getApplicationContext(), "The email or password is incorrect", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+
+                }else if(title.indexOf("SignUp#") !=-1){
+                    String[] data = title.split("#");
+
+                    auth.signInWithEmailAndPassword(data[1], data[2]);
+                    auth.createUserWithEmailAndPassword(data[1], data[2])
+                            .addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    if (task.isSuccessful()) {
+                                        // Sign in success, update UI with the signed-in user's information
+                                        Log.d(TAG, "createUserWithEmail:success");
+                                        //FirebaseUser user = mAuth.getCurrentUser();
+
+                                        FirebaseDatabaseController databaseController = new FirebaseDatabaseController();
+
+                                        databaseController.createUser(myadapter.createUserObject(), auth.getUid());
+                                        Intent intent = new Intent(MainActivity.this, GoogleMaps.class);
+                                        //intent.putExtra(EXTRA_MESSAGE, message);
+                                        startActivity(intent);
+                                        finish();
+                                    } else {
+                                        // If sign in fails, display a message to the user.
+                                        Log.w(TAG, "createUserWithEmail:failure", task.getException());
+
+                                        //updateUI(null);
+                                    }
+
+                                    // ...
+                                }
+                            });
                 }
             }
         });
@@ -192,7 +243,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //https://firebase.google.com/docs/auth/android/google-signin
-    private void signIn() {
+    private void signInGoogle() {
         auth.signOut();
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, 637);

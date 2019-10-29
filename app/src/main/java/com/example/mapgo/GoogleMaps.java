@@ -17,6 +17,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.Layout;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -40,6 +41,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 
+import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -89,7 +91,7 @@ public class GoogleMaps extends FragmentActivity implements OnMapReadyCallback, 
     private Button BtnHistory, BtnCancel, BtnStart, BtnEndTrip, BtnLogout, BtnDelete;
     private ImageButton imageButtonNavigation;
     private boolean NavigationPresent = false;
-    private LinearLayout linearLayoutMenu, linearLayoutSearch, linearLayoutTapToSearch, linearLayoutShowSearchResult, LinearlayoutInfo,LinearLayoutStartTripDetails, LinearLayoutActiveTrip;
+    private LinearLayout linearLayoutMenu, linearLayoutSearch, linearLayoutTapToSearch, linearLayoutShowSearchResult, LinearlayoutInfo,LinearLayoutStartTripDetails, LinearLayoutActiveTrip, LinearLayoutSearchBar;
     private TextView txtGetName, TxtPlaceName, TxtRoute, TxtDuration, TxtDistance;
     Location userLocation = null;
     private String prefferedMode, StartTime;
@@ -125,11 +127,11 @@ public class GoogleMaps extends FragmentActivity implements OnMapReadyCallback, 
         LinearLayoutStartTripDetails = findViewById(R.id.LinearLayoutStartTripDetails);
         imageButtonNavigation = findViewById(R.id.NavSetting);
         LinearlayoutInfo = findViewById(R.id.LinearlayoutInfo);
-        linearLayoutTapToSearch = findViewById(R.id.LinearLayoutTapToSearch);
+        //linearLayoutTapToSearch = findViewById(R.id.LinearLayoutTapToSearch);
         linearLayoutMenu = findViewById(R.id.LinearLayoutMenu);
         linearLayoutSearch = findViewById(R.id.LinearLayoutSearch);
         linearLayoutShowSearchResult = findViewById(R.id.LinearLayoutShowSearchResult);
-
+        LinearLayoutSearchBar = findViewById(R.id.LinearLayoutSearchBar);
         Places.initialize(getApplicationContext(), getString(R.string.google_maps_key));
 
         LinearLayoutActiveTrip.setVisibility(View.GONE);
@@ -146,7 +148,6 @@ public class GoogleMaps extends FragmentActivity implements OnMapReadyCallback, 
                 .requestEmail()
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-        //Intent signInIntent = mGoogleSignInClient.getSignInIntent();
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -162,11 +163,19 @@ public class GoogleMaps extends FragmentActivity implements OnMapReadyCallback, 
                     imageButtonNavigation.setBackgroundResource(R.drawable.ic_popmenuon_black_24dp);
                     NavigationPresent = false;
                     linearLayoutMenu.setVisibility(View.GONE);
+                    //new RelativeLayout.LayoutParams
+                    RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) linearLayoutSearch.getLayoutParams();
+                    params.width = 1200;
+                    linearLayoutSearch.setLayoutParams(params);
+
 
                 }else{
                     imageButtonNavigation.setBackgroundResource(R.drawable.ic_popmenuoff_black_24dp);
                     NavigationPresent = true;
                     linearLayoutMenu.setVisibility(View.VISIBLE);
+                    RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) linearLayoutSearch.getLayoutParams();
+                    params.width = 630;
+                    linearLayoutSearch.setLayoutParams(params);
                 }
 
             }
@@ -221,8 +230,8 @@ public class GoogleMaps extends FragmentActivity implements OnMapReadyCallback, 
                 DatabaseReference myRef = database.getReference();
                 prefferedMode = "CAR";
                 imageCar.setBackgroundResource(R.drawable.circle);
-                imageCycle.setBackgroundResource(R.color.colorWhite);
-                imageWalk.setBackgroundResource(R.color.colorWhite);
+                imageCycle.setBackgroundResource(R.color.colorPrimary);
+                imageWalk.setBackgroundResource(R.color.colorPrimary);
                 user.setUser_StartTransport("CAR");
                 myRef.child("Users").child(firebaseUser.getUid()).setValue(user);
             }
@@ -234,9 +243,9 @@ public class GoogleMaps extends FragmentActivity implements OnMapReadyCallback, 
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 DatabaseReference myRef = database.getReference();
                 prefferedMode = "CYCLE";
-                imageCar.setBackgroundResource(R.color.colorWhite);
+                imageCar.setBackgroundResource(R.color.colorPrimary);
                 imageCycle.setBackgroundResource(R.drawable.circle);
-                imageWalk.setBackgroundResource(R.color.colorWhite);
+                imageWalk.setBackgroundResource(R.color.colorPrimary);
                 user.setUser_StartTransport("CYCLE");
                 myRef.child("Users").child(firebaseUser.getUid()).setValue(user);
             }
@@ -248,8 +257,8 @@ public class GoogleMaps extends FragmentActivity implements OnMapReadyCallback, 
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 DatabaseReference myRef = database.getReference();
                 prefferedMode = "WALK";
-                imageCar.setBackgroundResource(R.color.colorWhite);
-                imageCycle.setBackgroundResource(R.color.colorWhite);
+                imageCar.setBackgroundResource(R.color.colorPrimary);
+                imageCycle.setBackgroundResource(R.color.colorPrimary);
                 imageWalk.setBackgroundResource(R.drawable.circle);
                 user.setUser_StartTransport("WALK");
                 myRef.child("Users").child(firebaseUser.getUid()).setValue(user);
@@ -399,10 +408,6 @@ public class GoogleMaps extends FragmentActivity implements OnMapReadyCallback, 
                         dialog.dismiss();
                         FirebaseAuth.getInstance().signOut();
                         finish();
-
-
-
-
                     }
                 });
                 BtnCancel.setOnClickListener(new View.OnClickListener() {
@@ -767,15 +772,15 @@ try{
 
                     if(user.getUser_StartTransport().equals("CAR")){
                         imageCar.setBackgroundResource(R.drawable.circle);
-                        imageCycle.setBackgroundResource(R.color.colorWhite);
-                        imageWalk.setBackgroundResource(R.color.colorWhite);
+                        imageCycle.setBackgroundResource(R.color.colorPrimary);
+                        imageWalk.setBackgroundResource(R.color.colorPrimary);
                     }else if(user.getUser_StartTransport().equals("CYCLE")){
-                        imageCar.setBackgroundResource(R.color.colorWhite);
+                        imageCar.setBackgroundResource(R.color.colorPrimary);
                         imageCycle.setBackgroundResource(R.drawable.circle);
-                        imageWalk.setBackgroundResource(R.color.colorWhite);
+                        imageWalk.setBackgroundResource(R.color.colorPrimary);
                     }else{
-                        imageCar.setBackgroundResource(R.color.colorWhite);
-                        imageCycle.setBackgroundResource(R.color.colorWhite);
+                        imageCar.setBackgroundResource(R.color.colorPrimary);
+                        imageCycle.setBackgroundResource(R.color.colorPrimary);
                         imageWalk.setBackgroundResource(R.drawable.circle);
                     }
 
@@ -828,7 +833,7 @@ try{
                     .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            // ...
+
                         }
                     });
         }catch (Exception e){
